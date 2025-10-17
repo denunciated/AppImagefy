@@ -2,11 +2,13 @@
 Maps AppImages to add on Rofi.
 
 ## Usage:
-Add the AppImages on $HOME/AppImages and then add the script to the rofi, you can use it as a standalone with python3 appimagefy.py or add it to your rofi menu.
+1. Add the AppImages on $HOME/AppImages. 
+2. Get the .sh script and paste on the $HOME/.config/hypr/scripts
+3. Get the .py script and paste on the $HOME/.config/hypr/UserScripts
+4. Use the examples below to use the scripts
 
 ### Example of adding to your rofi menu
-bind = $mainMod, D, exec, pkill rofi; rofi -show drun -modi "drun,filebrowser,AppImages:$HOME/rofi/scripts/appimages.py --rofi-mode,run,window" (from [JaKooLit](https://github.com/JaKooLit/)
- dots)
+bind = $mainMod, D, exec, pkill rofi; rofi -show drun -modi "drun,filebrowser,󱝑 appimgs:$HOME/Github/AppImagefy/rofi-appimages.sh,run,window" (from [JaKooLit](https://github.com/JaKooLit/) dots)
 
 ### Example of using as standalone
-bind = $mainMod, D, exec, python $HOME/rofi/scripts/appimages.py
+bind = $mainMod ALT, D, exec, $HOME/Github/AppImagefy/rofi-appimages.sh -dmenu (from [JaKooLit](https://github.com/JaKooLit/) dots)

@@ -2,39 +2,41 @@
 from pathlib import Path
 import sys
 import subprocess
+import os
 
 app_dir = Path.home() / "AppImages"
 app_dir.mkdir(parents=True, exist_ok=True)
 
-apps = [f.name for f in app_dir.iterdir() if f.is_file() and f.suffix.lower() == ".appimage"]
-
-if len(sys.argv) > 1 and sys.argv[1] == "--rofi-mode":
+def list_appimages():
+    apps = [f.name for f in app_dir.iterdir() if f.is_file() and f.suffix.lower() == ".appimage"]
     if not apps:
-        print("(no AppImages found)")
+        print("(No AppImages found)")
+        sys.exit(0)  
     else:
-        for a in apps:
-            print(a)
-    sys.exit(0)
+        for app in apps:
+            print(app)  
 
-if not apps:
-    apps = ["(no AppImages found)"]
+def launch_app(name: str):
+    app_path = app_dir / name
+    if app_path.is_file() and app_path.suffix.lower() == ".appimage":
+        subprocess.Popen(
+            [str(app_path)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            start_new_session=True
+        )
+    else:
+        print(f"Error: {app_path} is not a valid AppImage", file=sys.stderr)
+        sys.exit(1)
 
-# Launch Rofi as dmenu
-rofi = subprocess.Popen(
-    ["rofi", "-dmenu", "-p", "AppImages:"],
-    stdin=subprocess.PIPE,
-    stdout=subprocess.PIPE,
-    text=True
-)
+def main():
+    if len(sys.argv) == 1 or sys.argv[1] in ("--rofi-mode", "-dmenu"):
+        list_appimages()
+    elif len(sys.argv) == 2:
+        launch_app(sys.argv[1])
+    else:
+        print("Error: Invalid arguments", file=sys.stderr)
+        sys.exit(1)
 
-choice, _ = rofi.communicate("\n".join(apps))
-choice = choice.strip()
-
-app_path = app_dir / choice
-if app_path.is_file() and app_path.suffix.lower() == ".appimage":
-    subprocess.Popen(
-        [str(app_path)],
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        start_new_session=True
-    )
+if __name__ == "__main__":
+    main()
