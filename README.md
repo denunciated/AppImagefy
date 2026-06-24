@@ -2,6 +2,8 @@
 
 A lightweight utility to integrate your AppImages into Rofi, making them easily searchable and launchable from your application launcher.
 
+> Repository archived due to me not having a linux with me anymore..
+
 ## Features
 
 - 🚀 Launch AppImages directly from Rofi
